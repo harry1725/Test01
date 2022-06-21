@@ -1,7 +1,10 @@
 name: test
-version: 1.0.0
+version: 1.0.1
 api-version: 1.19
 main: harry1725.com.maven01.test
 author: Derman_e
-description: This is a test file.
+description: This is a test plugin made by Derman_e.
 
+commands:
+  hehe:
+    description: 플러그인 메인 커맨드입니다.
