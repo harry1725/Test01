@@ -24,7 +24,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.16.3-R0.1-SNAPSHOT</version>
+      <version>1.19-R0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
@@ -35,7 +35,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <release>15</release>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
     </plugins>
