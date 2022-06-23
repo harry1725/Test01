@@ -1,6 +1,6 @@
-package harry1725.com.maven01.commands;
+package harry1725.com.test01.commands;
 
-import harry1725.com.maven01.test;
+import harry1725.com.test01.test;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;

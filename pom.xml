@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>harry1725.com</groupId>
-  <artifactId>Maven01</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <artifactId>Test01</artifactId>
+  <version>1.0.2-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
