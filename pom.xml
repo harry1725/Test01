@@ -6,7 +6,7 @@
 
   <groupId>harry1725.com</groupId>
   <artifactId>Test01</artifactId>
-  <version>1.11-SNAPSHOT</version>
+  <version>1.11.1-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -14,8 +14,11 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class HeheCommands extends AbstractCommand {
+    public final Logger logger = Logger.getLogger("Test");
+
     public HeheCommands(test plugin, String commandLabel) {
         super(plugin, commandLabel);
     }
@@ -64,7 +67,7 @@ public class HeheCommands extends AbstractCommand {
                 if (args.length <= 0) {
                     player.sendMessage(ChatColor.RED + "명령어의 인자가 너무 적거나 없습니다! " + ChatColor.YELLOW + "/hehe help" + ChatColor.RED + " 명령어를 통해 도움말을 확인할 수 있습니다.");
                 } else {
-                    final int[] time = {10};
+                    final int[] time = {0};
 
                     if (args[0].equalsIgnoreCase("help")) {
                         if (args[1].equalsIgnoreCase("config")) {
@@ -185,6 +188,8 @@ public class HeheCommands extends AbstractCommand {
                         thehe.openInv(player);
                         player.sendMessage(ChatColor.GREEN + "게임모드를 변경할 수 있는 인벤토리 창을 띄웠습니다. ESC 키를 이용해 닫을 수 있습니다.");
                     } else if (args[0].equalsIgnoreCase("timer")) {
+                        time[0] = 10;
+
                         player.sendMessage(ChatColor.GREEN + "카운트다운을 시작합니다.");
 
                         thehe.getServer().getScheduler().scheduleSyncRepeatingTask(thehe, () -> {
@@ -197,7 +202,6 @@ public class HeheCommands extends AbstractCommand {
                                     p.sendMessage(ChatColor.GREEN + "카운트 다운 : " + ChatColor.RED + "종료!");
                                     p.playSound(location, Sound.ENTITY_PLAYER_LEVELUP, 10F, 1F);
                                     time[0]--;
-                                    time[0] = 10;
                                     Bukkit.getScheduler().cancelTasks(thehe);
                                 }
                             }
@@ -205,7 +209,6 @@ public class HeheCommands extends AbstractCommand {
                     } else if (args[0].equalsIgnoreCase("cancel")) {
                         player.sendMessage(ChatColor.RED + "카운트 다운이 취소되었습니다.");
                         Bukkit.getScheduler().cancelTasks(thehe);
-                        time[0] = 10;
                     } else if (args[0].equalsIgnoreCase("time")) {
                         if (!player.isOp()) {
                             player.sendMessage(ChatColor.RED + "이 명령어를 사용할 권한이 없습니다! 관리자에게 문의해 보세요.");
