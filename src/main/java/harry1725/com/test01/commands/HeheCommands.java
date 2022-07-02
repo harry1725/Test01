@@ -1,5 +1,6 @@
 package harry1725.com.test01.commands;
 
+import harry1725.com.test01.Permissions;
 import harry1725.com.test01.test;
 import harry1725.com.test01.items.HeheItems;
 import org.bukkit.Bukkit;
@@ -87,9 +88,14 @@ public class HeheCommands extends AbstractCommand {
                         int random = (int)(Math.random() * 100 + 1);
 
                         player.sendMessage(ChatColor.WHITE + "플러그인이 무작위로 생성한 숫자는 " + ChatColor.AQUA + random + ChatColor.WHITE + " 입니다!");
-                    } else if (args[0].equalsIgnoreCase("bandage")) {
-                        player.getInventory().addItem(HeheItems.getBandageItemStack());
-                        player.sendMessage(ChatColor.RED + "붕대" + ChatColor.WHITE + " 아이템이 지급되었습니다.");
+                    }
+                    if (args[0].equalsIgnoreCase("bandage")) {
+                        if (!player.isOp()) {
+                            player.sendMessage(ChatColor.RED + "이 명령어를 사용할 권한이 없습니다! 관리자에게 문의해 보세요.");
+                        } else {
+                            player.getInventory().addItem(HeheItems.getBandageItemStack());
+                            player.sendMessage(ChatColor.RED + "붕대" + ChatColor.WHITE + " 아이템이 지급되었습니다.");
+                        }
                     } else if (args[0].equalsIgnoreCase("config")) {
                         if (args.length <= 1) {
                             player.sendMessage(ChatColor.RED + "입력하신 인자값이 너무 적거나 없습니다. 아래의 목록에서 config에 등록된 이름을 찾을 수 있습니다.");
@@ -106,38 +112,48 @@ public class HeheCommands extends AbstractCommand {
                             }
                         }
                     } else if (args[0].equalsIgnoreCase("tp")) {
-                        if (args.length <= 1) {
-                            player.sendMessage(ChatColor.RED + "입력하신 인자값이 너무 적거나 없습니다. " + ChatColor.YELLOW + "/hehe help tp" + ChatColor.YELLOW + "를 통해 명령어 사용 방법을 확인하세요.");
+                        if (!player.isOp()) {
+                            player.sendMessage(ChatColor.RED + "이 명령어를 사용할 권한이 없습니다! 관리자에게 문의해 보세요.");
                         } else {
-                            if (args[1].equalsIgnoreCase("save")) {
-                                Location location = player.getLocation();
-
-                                thehe.getConfig().set(player.getName() + ".position.x", location.getBlockX());
-                                thehe.getConfig().set(player.getName() + ".position.y", location.getBlockY());
-                                thehe.getConfig().set(player.getName() + ".position.y", location.getBlockZ());
-                                thehe.getConfig().set(player.getName() + ".position.pitch", location.getPitch());
-                                thehe.getConfig().set(player.getName() + ".position.yaw", location.getYaw());
-                                thehe.saveConfig();
-
-                                player.sendMessage(ChatColor.YELLOW + player.getName() + ChatColor.GREEN + "의 현재 좌표가 저장되었습니다.");
-                            } else if (args[1].equalsIgnoreCase("load")) {
-                                if (!thehe.getConfig().isSet(player.getName() + ".position.x") ||
-                                    !thehe.getConfig().isSet(player.getName() + ".position.y") ||
-                                    !thehe.getConfig().isSet(player.getName() + ".position.z") ||
-                                    !thehe.getConfig().isSet(player.getName() + ".position.pitch") ||
-                                    !thehe.getConfig().isSet(player.getName() + ".position.yaw")) {
-                                    player.sendMessage(ChatColor.RED + "저장된 좌표가 없습니다! " + ChatColor.YELLOW + "/hehe tp save" + ChatColor.RED + " 명령어를 통해 좌표를 먼저 지정해 주세요.");
-                                } else {
-                                    double x = thehe.getConfig().getDouble(player.getName() + ".position.x");
-                                    double y = thehe.getConfig().getDouble(player.getName() + ".position.y");
-                                    double z = thehe.getConfig().getDouble(player.getName() + ".position.z");
-
-                                    player.teleport(new Location(player.getWorld(), x, y, z));
-                                    player.getLocation().setPitch((float) thehe.getConfig().getDouble(player.getName() + ".position.pitch"));
-                                    player.getLocation().setYaw((float) thehe.getConfig().getDouble(player.getName() + ".position.yaw"));
-                                }
+                            if (args.length <= 1) {
+                                player.sendMessage(ChatColor.RED + "입력하신 인자값이 너무 적거나 없습니다. " + ChatColor.YELLOW + "/hehe help tp" + ChatColor.YELLOW + "를 통해 명령어 사용 방법을 확인하세요.");
                             } else {
-                                player.sendMessage(ChatColor.RED + "/hehe tp에 등록되어 있지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help tp" + ChatColor.RED + "를 통해 명령어 사용 방법을 확인하세요.");
+                                if (args[1].equalsIgnoreCase("save")) {
+                                    Location location = player.getLocation();
+
+                                    thehe.getConfig().set(player.getName() + ".position.x", location.getBlockX());
+                                    thehe.getConfig().set(player.getName() + ".position.y", location.getBlockY());
+                                    thehe.getConfig().set(player.getName() + ".position.y", location.getBlockZ());
+                                    thehe.getConfig().set(player.getName() + ".position.pitch", location.getPitch());
+                                    thehe.getConfig().set(player.getName() + ".position.yaw", location.getYaw());
+                                    thehe.saveConfig();
+
+                                    player.sendMessage(ChatColor.YELLOW + player.getName() + ChatColor.GREEN + "의 현재 좌표가 저장되었습니다.");
+                                } else if (args[1].equalsIgnoreCase("load")) {
+                                    if (!thehe.getConfig().isSet(player.getName() + ".position.x") ||
+                                            !thehe.getConfig().isSet(player.getName() + ".position.y") ||
+                                            !thehe.getConfig().isSet(player.getName() + ".position.z") ||
+                                            !thehe.getConfig().isSet(player.getName() + ".position.pitch") ||
+                                            !thehe.getConfig().isSet(player.getName() + ".position.yaw")) {
+                                        player.sendMessage(ChatColor.RED + "저장된 좌표가 없습니다! " + ChatColor.YELLOW + "/hehe tp save" + ChatColor.RED + " 명령어를 통해 좌표를 먼저 지정해 주세요.");
+                                    } else {
+                                        double x = thehe.getConfig().getDouble(player.getName() + ".position.x");
+                                        double y = thehe.getConfig().getDouble(player.getName() + ".position.y");
+                                        double z = thehe.getConfig().getDouble(player.getName() + ".position.z");
+
+                                        player.teleport(new Location(player.getWorld(), x, y, z));
+                                        player.getLocation().setPitch((float) thehe.getConfig().getDouble(player.getName() + ".position.pitch"));
+                                        player.getLocation().setYaw((float) thehe.getConfig().getDouble(player.getName() + ".position.yaw"));
+                                    }
+                                } else if (args[0].equalsIgnoreCase("perm")) {
+                                    if (player.hasPermission(new Permissions().Test)) {
+                                        player.sendMessage(ChatColor.WHITE + "현재 " + ChatColor.GREEN + "Test.bypass" + ChatColor.WHITE + " 권한을 가지고 있습니다.");
+                                    } else {
+                                        player.sendMessage(ChatColor.WHITE + "현재 " + ChatColor.RED + "Test.bypass" + ChatColor.WHITE + "권한을 가지고 있지 않습니다.");
+                                    }
+                                } else {
+                                    player.sendMessage(ChatColor.RED + "/hehe tp에 등록되어 있지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help tp" + ChatColor.RED + "를 통해 명령어 사용 방법을 확인하세요.");
+                                }
                             }
                         }
                     } else {
