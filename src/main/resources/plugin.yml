@@ -1,7 +1,7 @@
 name: Test01
-version: 1.0.4
+version: 1.0.4.1
 api-version: 1.19
-main: harry1725.com.maven01.test
+main: harry1725.com.test01.test
 author: Derman_e
 description: Derman_e 수제 공부용 플러그인.
 

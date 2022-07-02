@@ -126,10 +126,10 @@ public class HeheCommands extends AbstractCommand {
                                     double x = thehe.getConfig().getDouble(player.getName() + ".position.x");
                                     double y = thehe.getConfig().getDouble(player.getName() + ".position.y");
                                     double z = thehe.getConfig().getDouble(player.getName() + ".position.z");
-                                    float pitch = (float) thehe.getConfig().get(player.getName() + ".position.pitch");
-                                    float yaw = (float) thehe.getConfig().get(player.getName() + ".position.yaw");
 
-                                    player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+                                    player.teleport(new Location(player.getWorld(), x, y, z));
+                                    player.getLocation().setPitch((float) thehe.getConfig().getDouble(player.getName() + ".position.pitch"));
+                                    player.getLocation().setYaw((float) thehe.getConfig().getDouble(player.getName() + ".position.yaw"));
                                 }
                             } else {
                                 player.sendMessage(ChatColor.RED + "/hehe tp에 등록되어 있지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help tp" + ChatColor.RED + "를 통해 명령어 사용 방법을 확인하세요.");
