@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,11 @@ public class HeheCommands extends AbstractCommand {
             tabs.add("bandage");
             tabs.add("config");
             tabs.add("tp");
+            tabs.add("perm");
+            tabs.add("inv");
+        }
 
+        if (args.length == 2) {
             if (args[0].equalsIgnoreCase("tp")) {
                 tabs.add("save");
                 tabs.add("load");
@@ -62,12 +65,19 @@ public class HeheCommands extends AbstractCommand {
                             player.sendMessage(ChatColor.GRAY + "=====================================================");
                             player.sendMessage("");
                             player.sendMessage(ChatColor.AQUA + thehe.getFullName() + ChatColor.WHITE + " 플러그인에 포함된 명령어입니다.");
+                            player.sendMessage(ChatColor.GREEN + "초록색 명령어" + ChatColor.YELLOW + "는 권한이 필요없고, ");
+                            player.sendMessage(ChatColor.GOLD + "주황색 명령어" + ChatColor.YELLOW + "는 권한이 필요합니다.");
+                            player.sendMessage("");
+                            player.sendMessage(ChatColor.GRAY + "-----------------------------------------------------");
+                            player.sendMessage("");
                             player.sendMessage(ChatColor.GREEN + "/hehe help" + ChatColor.WHITE + " : 이 플러그인의 도움말을 출력합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe info" + ChatColor.WHITE + " : 이 플러그인의 정보를 출력합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe random" + ChatColor.WHITE + " : 1부터 100 사이의 수 중 무작위 숫자 하나를 출력합니다.");
-                            player.sendMessage(ChatColor.GREEN + "/hehe bandage" + ChatColor.WHITE + " : 사용 시 배고픔을 2칸 소모하여 캐릭터의 체력을 4칸 회복하는 붕대 아이템을 지급합니다.");
+                            player.sendMessage(ChatColor.GOLD + "/hehe bandage" + ChatColor.WHITE + " : 사용 시 배고픔을 2칸 소모하여 캐릭터의 체력을 4칸 회복하는 붕대 아이템을 지급합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe config <String>" + ChatColor.WHITE + " : config.yml 파일에 있는 String 값을 읽어 출력합니다.");
-                            player.sendMessage(ChatColor.GREEN + "/hehe tp <save/load>" + ChatColor.WHITE + " : 플레이어의 현재 좌표를 저장하거나 저장한 좌표로 순간이동합니다.");
+                            player.sendMessage(ChatColor.GOLD + "/hehe tp <save/load>" + ChatColor.WHITE + " : 플레이어의 현재 좌표를 저장하거나 저장한 좌표로 순간이동합니다.");
+                            player.sendMessage(ChatColor.GREEN + "/hehe perm" + ChatColor.WHITE + " : 플레이어가 권한을 가지고 있는지 확인합니다.");
+                            player.sendMessage(ChatColor.GREEN + "/hehe inv" + ChatColor.WHITE + " : 게임모드를 변경할 수 있는 인벤토리 창을 띄웁니다.");
                             player.sendMessage("");
                             player.sendMessage(ChatColor.GRAY + "=====================================================");
                             player.sendMessage("");
@@ -145,17 +155,20 @@ public class HeheCommands extends AbstractCommand {
                                         player.getLocation().setPitch((float) thehe.getConfig().getDouble(player.getName() + ".position.pitch"));
                                         player.getLocation().setYaw((float) thehe.getConfig().getDouble(player.getName() + ".position.yaw"));
                                     }
-                                } else if (args[0].equalsIgnoreCase("perm")) {
-                                    if (player.hasPermission(new Permissions().Test)) {
-                                        player.sendMessage(ChatColor.WHITE + "현재 " + ChatColor.GREEN + "Test.bypass" + ChatColor.WHITE + " 권한을 가지고 있습니다.");
-                                    } else {
-                                        player.sendMessage(ChatColor.WHITE + "현재 " + ChatColor.RED + "Test.bypass" + ChatColor.WHITE + "권한을 가지고 있지 않습니다.");
-                                    }
                                 } else {
                                     player.sendMessage(ChatColor.RED + "/hehe tp에 등록되어 있지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help tp" + ChatColor.RED + "를 통해 명령어 사용 방법을 확인하세요.");
                                 }
                             }
                         }
+                    } else if (args[0].equalsIgnoreCase("perm")) {
+                        if (player.hasPermission(new Permissions().Test)) {
+                            player.sendMessage(ChatColor.WHITE + "현재 " + ChatColor.GREEN + "Test.bypass" + ChatColor.WHITE + " 권한을 가지고 있습니다.");
+                        } else {
+                            player.sendMessage(ChatColor.WHITE + "현재 " + ChatColor.RED + "Test.bypass" + ChatColor.WHITE + "권한을 가지고 있지 않습니다.");
+                        }
+                    } else if (args[0].equalsIgnoreCase("inv")) {
+                        thehe.openInv(player);
+                        player.sendMessage(ChatColor.GREEN + "게임모드를 변경할 수 있는 인벤토리 창을 띄웠습니다. ESC 키를 이용해 닫을 수 있습니다.");
                     } else {
                         player.sendMessage(ChatColor.RED + "hehe에 등록되어 있지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help" + ChatColor.RED + "를 통해 명령어 목록을 확인하세요.");
                     }
