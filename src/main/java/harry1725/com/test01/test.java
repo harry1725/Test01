@@ -44,6 +44,9 @@ public class test extends JavaPlugin implements Listener {
 
         pManager.registerEvents(this, this);
 
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+
         test.console(ChatColor.YELLOW + pfName + ChatColor.WHITE + " is now enabled!");
 
         super.onEnable();
@@ -51,6 +54,8 @@ public class test extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        saveConfig();
+
         test.console(ChatColor.YELLOW + pfName + ChatColor.WHITE + " is now disabled!");
         super.onDisable();
     }
