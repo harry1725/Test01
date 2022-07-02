@@ -11,12 +11,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.xml.stream.events.Namespace;
 import java.util.Objects;
 
 public class test extends JavaPlugin implements Listener {
@@ -93,5 +94,23 @@ public class test extends JavaPlugin implements Listener {
                 player.sendMessage(ChatColor.GREEN + "체력을 회복하였습니다.");
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        player.getInventory().addItem(HeheItems.getBandageItemStack());
+
+        event.setJoinMessage(ChatColor.YELLOW + player.getName() + ChatColor.WHITE + "님이 서버에 접속하셨습니다. 어서오세요~");
+    }
+
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+
+        player.getInventory().removeItem(HeheItems.getBandageItemStack());
+
+        event.setQuitMessage(ChatColor.YELLOW + player.getName() + ChatColor.WHITE + "님이 서버에서 나가셨습니다! 안녕히 가세요~");
     }
 }

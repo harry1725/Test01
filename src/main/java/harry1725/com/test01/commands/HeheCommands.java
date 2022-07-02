@@ -27,6 +27,13 @@ public class HeheCommands extends AbstractCommand {
             tabs.add("info");
             tabs.add("random");
             tabs.add("bandage");
+            tabs.add("config");
+            tabs.add("tp");
+
+            if (args[0].equalsIgnoreCase("tp")) {
+                tabs.add("save");
+                tabs.add("load");
+            }
         }
 
         return tabs;
@@ -81,9 +88,7 @@ public class HeheCommands extends AbstractCommand {
 
                         player.sendMessage(ChatColor.WHITE + "플러그인이 무작위로 생성한 숫자는 " + ChatColor.AQUA + random + ChatColor.WHITE + " 입니다!");
                     } else if (args[0].equalsIgnoreCase("bandage")) {
-                        ItemStack bandage = HeheItems.getBandageItemStack();
-
-                        player.getInventory().addItem(bandage);
+                        player.getInventory().addItem(HeheItems.getBandageItemStack());
                         player.sendMessage(ChatColor.RED + "붕대" + ChatColor.WHITE + " 아이템이 지급되었습니다.");
                     } else if (args[0].equalsIgnoreCase("config")) {
                         if (args.length <= 1) {
