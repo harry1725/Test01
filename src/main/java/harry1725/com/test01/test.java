@@ -4,17 +4,19 @@ import harry1725.com.test01.commands.HeheCommands;
 import harry1725.com.test01.items.HeheItems;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.*;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.xml.stream.events.Namespace;
 import java.util.Objects;
 
 public class test extends JavaPlugin implements Listener {
@@ -43,6 +45,18 @@ public class test extends JavaPlugin implements Listener {
         Objects.requireNonNull(getCommand(cmd_hehe.getLabel())).setTabCompleter(cmd_hehe);
 
         pManager.registerEvents(this, this);
+
+        NamespacedKey key = new NamespacedKey(this, NamespacedKey.MINECRAFT);
+        ShapedRecipe saddle = new ShapedRecipe(key, new ItemStack(Material.SADDLE, 1))
+                .shape("!!!", "!@!", "@ @").
+                setIngredient('!', Material.LEATHER).setIngredient('@', Material.IRON_INGOT);
+        ShapelessRecipe chest = new ShapelessRecipe(key, new ItemStack(Material.OAK_PLANKS, 8))
+                .addIngredient(Material.CHEST);
+        FurnaceRecipe diamond = new FurnaceRecipe(key, new ItemStack(Material.DIAMOND, 1), Material.COAL, 8, 10);
+
+        Bukkit.addRecipe(saddle);
+        Bukkit.addRecipe(chest);
+        Bukkit.addRecipe(diamond);
 
         getConfig().options().copyDefaults(true);
         saveConfig();
