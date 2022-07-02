@@ -70,13 +70,17 @@ public class HeheCommands extends AbstractCommand {
                     final int[] time = {0};
 
                     if (args[0].equalsIgnoreCase("help")) {
-                        if (args[1].equalsIgnoreCase("config")) {
-                            player.sendMessage(ChatColor.AQUA + "/hehe config" + ChatColor.WHITE + " 사용 방법 :");
-                            player.sendMessage(ChatColor.GREEN + "/hehe config <String>" + ChatColor.WHITE + " : config.yml 파일에 있는 String 값을 읽어 출력합니다.");
-                        } else if (args[1].equalsIgnoreCase("tp")) {
-                            player.sendMessage(ChatColor.AQUA + "/hehe tp" + ChatColor.WHITE + " 사용 방법 :");
-                            player.sendMessage(ChatColor.GREEN + "/hehe tp save" + ChatColor.WHITE + "플레이어의 현재 좌표를 저장합니다.");
-                            player.sendMessage(ChatColor.GREEN + "/hehe tp load" + ChatColor.WHITE + "플레이어가 저장한 좌표로 순간이동합니다.");
+                        if (args.length >= 2) {
+                            if (args[1].equalsIgnoreCase("config")) {
+                                player.sendMessage(ChatColor.AQUA + "/hehe config" + ChatColor.WHITE + " 사용 방법 :");
+                                player.sendMessage(ChatColor.GREEN + "/hehe config <String>" + ChatColor.WHITE + " : config.yml 파일에 있는 String 값을 읽어 출력합니다.");
+                            } else if (args[1].equalsIgnoreCase("tp")) {
+                                player.sendMessage(ChatColor.AQUA + "/hehe tp" + ChatColor.WHITE + " 사용 방법 :");
+                                player.sendMessage(ChatColor.GREEN + "/hehe tp save" + ChatColor.WHITE + "플레이어의 현재 좌표를 저장합니다.");
+                                player.sendMessage(ChatColor.GREEN + "/hehe tp load" + ChatColor.WHITE + "플레이어가 저장한 좌표로 순간이동합니다.");
+                            } else {
+                                player.sendMessage(ChatColor.RED + "/hehe help에 등록되지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help" + ChatColor.WHITE + "를 통해 명령어 사용 방법을 확인하세요.");
+                            }
                         } else {
                             player.sendMessage("");
                             player.sendMessage(ChatColor.GRAY + "=====================================================");
@@ -118,8 +122,7 @@ public class HeheCommands extends AbstractCommand {
                         int random = (int)(Math.random() * 100 + 1);
 
                         player.sendMessage(ChatColor.WHITE + "플러그인이 무작위로 생성한 숫자는 " + ChatColor.AQUA + random + ChatColor.WHITE + " 입니다!");
-                    }
-                    if (args[0].equalsIgnoreCase("bandage")) {
+                    } else if (args[0].equalsIgnoreCase("bandage")) {
                         if (!player.isOp()) {
                             player.sendMessage(ChatColor.RED + "이 명령어를 사용할 권한이 없습니다! 관리자에게 문의해 보세요.");
                         } else {
@@ -190,6 +193,7 @@ public class HeheCommands extends AbstractCommand {
                     } else if (args[0].equalsIgnoreCase("timer")) {
                         time[0] = 10;
 
+                        player.sendMessage("");
                         player.sendMessage(ChatColor.GREEN + "카운트다운을 시작합니다.");
 
                         thehe.getServer().getScheduler().scheduleSyncRepeatingTask(thehe, () -> {
@@ -215,7 +219,7 @@ public class HeheCommands extends AbstractCommand {
                         } else {
                             if (args.length <= 1) {
                                 player.sendMessage(ChatColor.RED + "입력하신 인자값이 너무 적거나 없습니다. " + ChatColor.YELLOW + "/hehe help time" + ChatColor.YELLOW + "를 통해 명령어 사용 방법을 확인하세요.");
-                            } else if (args[1].equalsIgnoreCase("7")) {
+                            } else if (args[1].equalsIgnoreCase("6")) {
                                 Objects.requireNonNull(Bukkit.getWorld(world)).setTime(0);
                                 player.sendMessage(ChatColor.GREEN + "세계의 시간을 " + ChatColor.YELLOW + "AM 6:00" + ChatColor.WHITE + "로 변경하였습니다.");
                             } else if (args[1].equalsIgnoreCase("12")) {

@@ -38,6 +38,17 @@ public class test extends JavaPlugin implements Listener {
         Bukkit.getConsoleSender().sendMessage(message);
     }
 
+    public void openInv(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 27, "게임모드 변경");
+
+        inv.setItem(10, HeheItems.getSurvivalIconItemStack());
+        inv.setItem(12, HeheItems.getCreativeIconItemStack());
+        inv.setItem(14, HeheItems.getAdventureIconItemStack());
+        inv.setItem(16, HeheItems.getSpectatorIconItemStack());
+
+        player.openInventory(inv);
+    }
+
     @Override
     public void onEnable() {
         HeheCommands cmd_hehe = new HeheCommands(this, "hehe");
@@ -75,17 +86,6 @@ public class test extends JavaPlugin implements Listener {
         super.onDisable();
     }
 
-    public void openInv(Player player) {
-        Inventory inv = Bukkit.createInventory(null, 27, "게임모드 변경");
-
-        inv.setItem(10, HeheItems.getSurvivalIconItemStack());
-        inv.setItem(12, HeheItems.getCreativeIconItemStack());
-        inv.setItem(14, HeheItems.getAdventureIconItemStack());
-        inv.setItem(16, HeheItems.getSpectatorIconItemStack());
-
-        player.openInventory(inv);
-    }
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
@@ -108,9 +108,11 @@ public class test extends JavaPlugin implements Listener {
         if(action.equals(Action.RIGHT_CLICK_AIR) && inventory.getItemInMainHand().equals(bandage)) {
             if (foodLevel >= 0 && foodLevel <= 3) {
                 player.sendMessage(ChatColor.RED + "붕대를 사용하기 위한 배고픔이 부족합니다. 배고픔을 2칸 이상으로 채운 뒤 다시 사용해 주세요!");
-            } else if (foodLevel >= 4) {
+            } else if (health >= 16.0) {
+                player.sendMessage(ChatColor.RED + "붕대를 사용하기에는 아직 건강합니다. 체력을 2칸 이상 잃은 뒤 다시 사용해 주세요!");
+            } else {
                 player.setFoodLevel(foodLevel - 4);
-                player.setHealth(health + 8.0);
+                player.setHealth(health + 4.0);
                 player.sendMessage(ChatColor.GREEN + "체력을 회복하였습니다.");
             }
         }
@@ -122,14 +124,14 @@ public class test extends JavaPlugin implements Listener {
         Entity killer = event.getEntity().getKiller();
 
         if (Objects.requireNonNull(event.getDeathMessage()).contains("fell from a high place")) {
-            event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + "이(가) 앞을 보지 않고 달리다가 떨어졌습니다.");
+            event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + " 이(가) 앞을 보지 않고 달리다가 떨어졌습니다.");
         } else if (event.getDeathMessage().contains("went up in flames")) {
-            event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + "이(가) 용암에서 살아남지 못했습니다.");
+            event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + " 이(가) 너무 추운 나머지 불길 속으로 뛰어들었습니다.");
         } else if (killer != null) {
             if (event.getDeathMessage().contains("was slain by")) {
-                event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + "이(가) \"멈춰!\"라고 소리질렀지만 " + killer.getName() + "은(는) 더욱 거세게 폭력을 행사했습니다.");
+                event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + " 이(가) \"멈춰!\"라고 외쳤지만 " + killer.getName() + " 은(는) 더욱 거세게 폭력을 행사했습니다.");
             } else if (event.getDeathMessage().contains("was shot by")) {
-                event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + "은(는) 평화롭게 지내고 있었지만 " + killer.getName() + "이(가) 멀리서 저격했습니다.");
+                event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + " 은(는) 평화롭게 지내고 있었지만 " + killer.getName() + " 이(가) 멀리서 저격했습니다.");
             }
         }
     }
