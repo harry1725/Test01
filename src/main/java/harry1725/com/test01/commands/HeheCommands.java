@@ -136,10 +136,10 @@ public class HeheCommands extends AbstractCommand {
                         } else {
                             if (args[1].equalsIgnoreCase("first")) {
                                 player.sendMessage(ChatColor.AQUA + "config.yml의 first 메세지입니다.");
-                                player.sendMessage(ChatColor.WHITE + "first : " + ChatColor.GRAY + Bukkit.spigot().getConfig().getString("first"));
+                                player.sendMessage(ChatColor.WHITE + "first : " + ChatColor.GRAY + thehe.getConfig().getString("first"));
                             } else if (args[1].equalsIgnoreCase("second")) {
                                 player.sendMessage(ChatColor.AQUA + "config.yml의 second 메세지입니다.");
-                                player.sendMessage(ChatColor.WHITE + "second : " + ChatColor.GRAY + Bukkit.spigot().getConfig().getString("second"));
+                                player.sendMessage(ChatColor.WHITE + "second : " + ChatColor.GRAY + thehe.getConfig().getString("second"));
                             } else {
                                 player.sendMessage(ChatColor.RED + "/hehe config에 등록되어 있지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help config" + ChatColor.RED + "를 통해 명령어 사용 방법을 확인하세요.");
                             }
@@ -185,7 +185,7 @@ public class HeheCommands extends AbstractCommand {
                         if (player.hasPermission(new Permissions().Test)) {
                             player.sendMessage(ChatColor.WHITE + "현재 " + ChatColor.GREEN + "Test.bypass" + ChatColor.WHITE + " 권한을 가지고 있습니다.");
                         } else {
-                            player.sendMessage(ChatColor.WHITE + "현재 " + ChatColor.RED + "Test.bypass" + ChatColor.WHITE + "권한을 가지고 있지 않습니다.");
+                            player.sendMessage(ChatColor.WHITE + "현재 " + ChatColor.RED + "Test.bypass" + ChatColor.WHITE + " 권한을 가지고 있지 않습니다.");
                         }
                     } else if (args[0].equalsIgnoreCase("inv")) {
                         thehe.openInv(player);
