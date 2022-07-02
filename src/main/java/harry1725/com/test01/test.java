@@ -178,4 +178,5 @@ public class test extends JavaPlugin implements Listener {
 
         event.setQuitMessage(ChatColor.YELLOW + player.getName() + ChatColor.WHITE + "님이 서버에서 나가셨습니다! 안녕히 가세요~");
     }
+
 }
