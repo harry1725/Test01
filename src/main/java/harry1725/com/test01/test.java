@@ -6,10 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -73,6 +75,24 @@ public class test extends JavaPlugin implements Listener {
 
         test.console(ChatColor.YELLOW + pfName + ChatColor.WHITE + " is now disabled!");
         super.onDisable();
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player victim = event.getEntity().getPlayer();
+        Entity killer = event.getEntity().getKiller();
+
+        if (Objects.requireNonNull(event.getDeathMessage()).contains("fell from a high place")) {
+            event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + "이(가) 앞을 보지 않고 달리다가 떨어졌습니다.");
+        } else if (event.getDeathMessage().contains("went up in flames")) {
+            event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + "이(가) 용암에서 살아남지 못했습니다.");
+        } else if (killer != null) {
+            if (event.getDeathMessage().contains("was slain by")) {
+                event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + "이(가) \"멈춰!\"라고 소리질렀지만 " + killer.getName() + "은(는) 더욱 거세게 폭력을 행사했습니다.");
+            } else if (event.getDeathMessage().contains("was shot by")) {
+                event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + "은(는) 평화롭게 지내고 있었지만 " + killer.getName() + "이(가) 멀리서 저격했습니다.");
+            }
+        }
     }
 
     @EventHandler
