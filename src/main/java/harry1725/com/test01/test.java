@@ -59,6 +59,12 @@ public class test extends JavaPlugin implements Listener {
         Objective obj = board.registerNewObjective("Testing", "dummy", "");
         Score score = obj.getScore("Score");
 
+        Team team = board.registerNewTeam("TestTeam");
+
+        team.addEntry(player.getName());
+        team.setPrefix(ChatColor.GREEN + "");
+        team.setCanSeeFriendlyInvisibles(true);
+
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         obj.setDisplayName(ChatColor.AQUA + "스코어보드 테스트!");
 
