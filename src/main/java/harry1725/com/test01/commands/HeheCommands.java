@@ -1,5 +1,6 @@
 package harry1725.com.test01.commands;
 
+import harry1725.com.test01.EnumTest;
 import harry1725.com.test01.Permissions;
 import harry1725.com.test01.test;
 import harry1725.com.test01.items.HeheItems;
@@ -168,6 +169,7 @@ public class HeheCommands extends AbstractCommand {
                             player.sendMessage(ChatColor.GOLD + "/hehe time <6/12/18/24>" + ChatColor.WHITE + " 월드의 시간을 오전 6시/오후 12시/오후 6시/오전 12시로 변경합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe potion <포션 효과>" + ChatColor.WHITE + "포션 효과를 부여합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe nickname <reset/String>" + ChatColor.WHITE + "플레이어 닉네임을 설정하거나 초기화합니다.");
+                            player.sendMessage(ChatColor.GREEN + "/hehe enum <String>" + ChatColor.WHITE + "열거형 테스트입니다.");
                             player.sendMessage("");
                             player.sendMessage(ChatColor.GRAY + "=====================================================");
                             player.sendMessage("");
@@ -356,6 +358,47 @@ public class HeheCommands extends AbstractCommand {
 
                                 player.setDisplayName(args[1]);
                                 player.setPlayerListName(args[1]);
+                            }
+                        }
+                    } else if (args[0].equalsIgnoreCase("enum")) {
+                        if (args.length <= 1) {
+                            player.sendMessage(ChatColor.RED + "열거 값이 입력되지 않았거나 알 수 없는 열거형 값입니다. 아래의 표를 참고해 주세요.");
+                            player.sendMessage(ChatColor.YELLOW + "apple, chocolate, ramyeon, rice, corn, sugar_cube, salad");
+                        } else {
+                            for (EnumTest e : EnumTest.getFoods()) {
+                                if (args[1].equalsIgnoreCase(e.foodName)) {
+                                    String result = e.healthy ? "건강한 음식입니다." : "건강하지 않은 음식입니다.";
+                                    String fdName = "";
+
+                                    switch (e.foodName) {
+                                        case "apple":
+                                            fdName = "사과";
+                                            break;
+                                        case "chocolate":
+                                            fdName = "초콜렛";
+                                            break;
+                                        case "ramyeon":
+                                            fdName = "라면";
+                                            break;
+                                        case "rice":
+                                            fdName = "쌀";
+                                            break;
+                                        case "corn":
+                                            fdName = "옥수수";
+                                            break;
+                                        case "sugar_cube":
+                                            fdName = "각설탕";
+                                            break;
+                                        case "salad":
+                                            fdName = "샐러드";
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
+                                    player.sendMessage(ChatColor.WHITE + fdName + " 은(는) " + result);
+                                    break;
+                                }
                             }
                         }
                     } else {
