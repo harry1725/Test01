@@ -126,7 +126,7 @@ public class test extends JavaPlugin implements Listener {
 
         scboard(player);
 
-        event.setJoinMessage(ChatColor.YELLOW + player.getName() + ChatColor.WHITE + "님이 서버에 접속하셨습니다. 어서오세요~");
+        event.setJoinMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.WHITE + "님이 서버에 접속하셨습니다. 어서오세요~");
     }
 
     @EventHandler
@@ -155,17 +155,17 @@ public class test extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player victim = event.getEntity().getPlayer();
-        Entity killer = event.getEntity().getKiller();
+        Player killer = event.getEntity().getKiller();
 
         if (Objects.requireNonNull(event.getDeathMessage()).contains("fell from a high place")) {
-            event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + " 이(가) 앞을 보지 않고 달리다가 떨어졌습니다.");
+            event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getDisplayName() + " 이(가) 앞을 보지 않고 달리다가 떨어졌습니다.");
         } else if (event.getDeathMessage().contains("went up in flames")) {
-            event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + " 이(가) 너무 추운 나머지 불길 속으로 뛰어들었습니다.");
+            event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getDisplayName() + " 이(가) 너무 추운 나머지 불길 속으로 뛰어들었습니다.");
         } else if (killer != null) {
             if (event.getDeathMessage().contains("was slain by")) {
-                event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + " 이(가) \"멈춰!\"라고 외쳤지만 " + killer.getName() + " 은(는) 더욱 거세게 폭력을 행사했습니다.");
+                event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getDisplayName() + " 이(가) \"멈춰!\"라고 외쳤지만 " + killer.getDisplayName() + " 은(는) 더욱 거세게 폭력을 행사했습니다.");
             } else if (event.getDeathMessage().contains("was shot by")) {
-                event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getName() + " 은(는) 평화롭게 지내고 있었지만 " + killer.getName() + " 이(가) 멀리서 저격했습니다.");
+                event.setDeathMessage(ChatColor.WHITE + Objects.requireNonNull(victim).getDisplayName() + " 은(는) 평화롭게 지내고 있었지만 " + killer.getDisplayName() + " 이(가) 멀리서 저격했습니다.");
             }
         }
     }
@@ -212,7 +212,7 @@ public class test extends JavaPlugin implements Listener {
 
         player.getInventory().removeItem(HeheItems.getBandageItemStack());
 
-        event.setQuitMessage(ChatColor.YELLOW + player.getName() + ChatColor.WHITE + "님이 서버에서 나가셨습니다! 안녕히 가세요~");
+        event.setQuitMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.WHITE + "님이 서버에서 나가셨습니다! 안녕히 가세요~");
     }
 
 }
