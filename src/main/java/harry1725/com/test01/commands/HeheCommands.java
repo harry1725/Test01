@@ -224,25 +224,49 @@ public class HeheCommands extends AbstractCommand {
                         thehe.openInv(player);
                         player.sendMessage(ChatColor.GREEN + "게임모드를 변경할 수 있는 인벤토리 창을 띄웠습니다. ESC 키를 이용해 닫을 수 있습니다.");
                     } else if (args[0].equalsIgnoreCase("timer")) {
-                        time[0] = 10;
+                        if (args.length == 1) {
+                            time[0] = 10;
 
-                        player.sendMessage("");
-                        player.sendMessage(ChatColor.GREEN + "카운트다운을 시작합니다.");
+                            player.sendMessage("");
+                            player.sendMessage(ChatColor.GREEN + "카운트다운을 시작합니다.");
 
-                        thehe.getServer().getScheduler().scheduleSyncRepeatingTask(thehe, () -> {
-                            for (Player p : Bukkit.getOnlinePlayers()) {
-                                if (time[0] != -1) {
-                                    p.sendMessage(ChatColor.GREEN + "카운트 다운 : " + ChatColor.YELLOW + time[0] + ChatColor.AQUA + " 초");
-                                    p.playSound(location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10F, 1F);
-                                    time[0]--;
-                                } else {
-                                    p.sendMessage(ChatColor.GREEN + "카운트 다운 : " + ChatColor.RED + "종료!");
-                                    p.playSound(location, Sound.ENTITY_PLAYER_LEVELUP, 10F, 1F);
-                                    time[0]--;
-                                    Bukkit.getScheduler().cancelTasks(thehe);
+                            thehe.getServer().getScheduler().scheduleSyncRepeatingTask(thehe, () -> {
+                                for (Player p : Bukkit.getOnlinePlayers()) {
+                                    if (time[0] != 0) {
+                                        p.sendMessage(ChatColor.GREEN + "카운트 다운 : " + ChatColor.YELLOW + time[0] + ChatColor.AQUA + " 초");
+                                        p.playSound(location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10F, 1F);
+                                        time[0]--;
+                                    } else {
+                                        p.sendMessage(ChatColor.GREEN + "카운트 다운 : " + ChatColor.RED + "종료!");
+                                        p.playSound(location, Sound.ENTITY_PLAYER_LEVELUP, 10F, 1F);
+                                        time[0]--;
+                                        Bukkit.getScheduler().cancelTasks(thehe);
+                                    }
                                 }
+                            }, 0L, 20L);
+                        } else {
+                            if (args[1].equalsIgnoreCase("bar")) {
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.GREEN + "카운트다운을 시작합니다.");
+
+                                thehe.getServer().getScheduler().scheduleSyncRepeatingTask(thehe, () -> {
+                                    for (Player p : Bukkit.getOnlinePlayers()) {
+                                        if (time[0] != -1) {
+                                            p.sendMessage(ChatColor.GREEN + "카운트 다운 : " + ChatColor.YELLOW + time[0] + ChatColor.AQUA + " 초");
+                                            p.setLevel(time[0]);
+                                            p.playSound(location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10F, 1F);
+                                            time[0]--;
+                                        } else {
+                                            p.setLevel(0);
+                                            p.sendMessage(ChatColor.GREEN + "카운트 다운 : " + ChatColor.RED + "종료!");
+                                            p.playSound(location, Sound.ENTITY_PLAYER_LEVELUP, 10F, 1F);
+                                            time[0]--;
+                                            Bukkit.getScheduler().cancelTasks(thehe);
+                                        }
+                                    }
+                                }, 0L, 20L);
                             }
-                        }, 0L, 20L);
+                        }
                     } else if (args[0].equalsIgnoreCase("cancel")) {
                         player.sendMessage(ChatColor.RED + "카운트 다운이 취소되었습니다.");
                         Bukkit.getScheduler().cancelTasks(thehe);

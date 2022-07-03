@@ -41,6 +41,10 @@ public class test extends JavaPlugin implements Listener {
         Bukkit.getConsoleSender().sendMessage(message);
     }
 
+    public static int getLineNumber() {
+        return Thread.currentThread().getStackTrace()[2].getLineNumber();
+    }
+
     public void openInv(Player player) {
         Inventory inv = Bukkit.createInventory(null, 27, "게임모드 변경");
 
