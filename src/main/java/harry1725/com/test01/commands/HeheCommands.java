@@ -10,6 +10,8 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,16 +41,21 @@ public class HeheCommands extends AbstractCommand {
             tabs.add("timer");
             tabs.add("cancel");
             tabs.add("time");
-        }
-
-        if (args[0].equalsIgnoreCase("tp")) {
-            tabs.add("save");
-            tabs.add("load");
-        } else if (args[0].equalsIgnoreCase("time")) {
-            tabs.add("6");
-            tabs.add("12");
-            tabs.add("18");
-            tabs.add("24");
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("tp")) {
+                tabs.add("save");
+                tabs.add("load");
+            } else if (args[0].equalsIgnoreCase("timer")) {
+                tabs.add("bar");
+            } else if (args[0].equalsIgnoreCase("time")) {
+                tabs.add("6");
+                tabs.add("12");
+                tabs.add("18");
+                tabs.add("24");
+            } else if (args[0].equalsIgnoreCase("potion")) {
+                tabs.add("nv");
+                tabs.add("st");
+            }
         }
 
         return tabs;
@@ -112,8 +119,20 @@ public class HeheCommands extends AbstractCommand {
                                 player.sendMessage("");
                                 player.sendMessage(ChatColor.GRAY + "=====================================================");
                                 player.sendMessage("");
+                            } else if (args[1].equalsIgnoreCase("potion")) {
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.GRAY + "=====================================================");
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.GREEN + "초록색 명령어" + ChatColor.YELLOW + "는 권한이 필요없고, ");
+                                player.sendMessage(ChatColor.GOLD + "주황색 명령어" + ChatColor.YELLOW + "는 권한이 필요합니다.");
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.AQUA + "/hehe potion" + ChatColor.WHITE + " 사용 방법 :");
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.GREEN + "/hehe potion <포션 효과>" + ChatColor.WHITE + "포션 효과를 부여합니다.");
+                                player.sendMessage(ChatColor.AQUA + "포션 효과" + ChatColor.WHITE + " :");
+                                player.sendMessage(ChatColor.BLUE + "nv (야간 투시)" + ChatColor.RED + ", " + ChatColor.YELLOW + "st (포화)" + ChatColor.RED + "");
                             } else {
-                                player.sendMessage(ChatColor.RED + "/hehe help에 등록되지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help" + ChatColor.WHITE + "를 통해 명령어 사용 방법을 확인하세요.");
+                                player.sendMessage(ChatColor.RED + "/hehe help에 등록되지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help time" + ChatColor.WHITE + "를 통해 명령어 사용 방법을 확인하세요.");
                             }
                         } else {
                             player.sendMessage("");
@@ -133,9 +152,10 @@ public class HeheCommands extends AbstractCommand {
                             player.sendMessage(ChatColor.GOLD + "/hehe tp [save/load]" + ChatColor.WHITE + " : 플레이어의 현재 좌표를 저장하거나 저장한 좌표로 순간이동합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe perm" + ChatColor.WHITE + " : 플레이어가 권한을 가지고 있는지 확인합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe inv" + ChatColor.WHITE + " : 게임모드를 변경할 수 있는 인벤토리 창을 띄웁니다.");
-                            player.sendMessage(ChatColor.GREEN + "/hehe timer" + ChatColor.WHITE + " : 10초 타이머를 시작합니다.");
+                            player.sendMessage(ChatColor.GREEN + "/hehe timer [bar]" + ChatColor.WHITE + " : 10초 타이머를 시작합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe cancel" + ChatColor.WHITE + " : 플러그인을 통해 실행되는 모든 것을 취소합니다.");
-                            player.sendMessage(ChatColor.GOLD + "/hehe time [6/12/18/24]" + ChatColor.WHITE + " 월드의 시간을 오전 6시/오후 12시/오후 6시/오전 12시로 변경합니다.");
+                            player.sendMessage(ChatColor.GOLD + "/hehe time <6/12/18/24>" + ChatColor.WHITE + " 월드의 시간을 오전 6시/오후 12시/오후 6시/오전 12시로 변경합니다.");
+                            player.sendMessage(ChatColor.GREEN + "/hehe potion <포션 효과>" + ChatColor.WHITE + "포션 효과를 부여합니다.");
                             player.sendMessage("");
                             player.sendMessage(ChatColor.GRAY + "=====================================================");
                             player.sendMessage("");
@@ -288,6 +308,21 @@ public class HeheCommands extends AbstractCommand {
                             } else if (args[1].equalsIgnoreCase("24")) {
                                 Objects.requireNonNull(Bukkit.getWorld(world)).setTime(18000);
                                 player.sendMessage(ChatColor.GREEN + "세계의 시간을 " + ChatColor.YELLOW + "AM 12:00" + ChatColor.WHITE + "로 변경하였습니다.");
+                            }
+                        }
+                    } else if (args[0].equalsIgnoreCase("potion")) {
+                        if (args.length == 1) {
+                            player.sendMessage(ChatColor.RED + "명령어의 인자가 너무 적거나 없습니다! " + ChatColor.YELLOW + "/hehe help potion" + ChatColor.RED + " 명령어를 통해 도움말을 확인할 수 있습니다.");
+                        } else {
+                            if (args[1].equalsIgnoreCase("nv")) {
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 1000000, 0, false, false));
+                                player.sendMessage(ChatColor.GREEN + "포션 효과 " + ChatColor.BLUE + "야간 투시" + ChatColor.GREEN + "가 적용되었습니다.");
+                            } else if (args[1].equalsIgnoreCase("st")) {
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 1000000, 100, false, false));
+                                player.sendMessage(ChatColor.GREEN + "포션 효과 " + ChatColor.YELLOW + "포화" + ChatColor.GREEN + "가 적용되었습니다.");
+                            } else {
+                                player.sendMessage(ChatColor.RED + "알 수 없는 포션 효과입니다. 아래의 목록에 있는 포션 효과를 입력해 주세요.");
+                                player.sendMessage(ChatColor.BLUE + "nv (야간 투시)" + ChatColor.RED + ", " + ChatColor.YELLOW + "st (포화)" + ChatColor.RED + "");
                             }
                         }
                     } else {
