@@ -271,6 +271,24 @@ public class HeheCommands extends AbstractCommand {
                     }
                 }
             }
+        } else {
+            if (command.getName().equalsIgnoreCase("cs")) {
+                if (args.length <= 0) {
+                    sender.sendMessage(ChatColor.YELLOW + "인자 값이 너무 적거나 없습니다. 다른 커맨드를 입력해 주세요!");
+                } else {
+                    if (args[0].equalsIgnoreCase("test")) {
+                        sender.sendMessage(ChatColor.GREEN + "콘솔 커맨드가 정상적으로 작동합니다! (멀티 커맨드 1)");
+                    } else if (args[0].equalsIgnoreCase("exam")) {
+                        if (args.length <= 1) {
+                            sender.sendMessage(ChatColor.YELLOW + "인자 값이 너무 적거나 없습니다. 다른 커맨드를 입력해 주세요!");
+                        } else {
+                            if (args[1].equalsIgnoreCase("t1")) {
+                                sender.sendMessage(ChatColor.GREEN + "콘솔 커맨드가 정상적으로 작동합니다! (멀티 커맨드 2)");
+                            }
+                        }
+                    }
+                }
+            }
         }
         
         return false;

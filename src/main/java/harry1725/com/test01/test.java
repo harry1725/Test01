@@ -17,10 +17,13 @@ import org.bukkit.inventory.*;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.*;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class test extends JavaPlugin implements Listener {
+    public final Logger logger = Logger.getLogger("Minecraft");
     PluginDescriptionFile pdfFile = this.getDescription();
     PluginManager pManager = Bukkit.getPluginManager();
 
@@ -49,12 +52,31 @@ public class test extends JavaPlugin implements Listener {
         player.openInventory(inv);
     }
 
+    public void scboard(Player player) {
+        ScoreboardManager sm = Bukkit.getScoreboardManager();
+
+        Scoreboard board = Objects.requireNonNull(sm).getNewScoreboard();
+        Objective obj = board.registerNewObjective("Testing", "dummy", "");
+        Score score = obj.getScore("Score");
+
+        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+        obj.setDisplayName(ChatColor.AQUA + "스코어보드 테스트!");
+
+        score.setScore(20);
+
+        player.setScoreboard(board);
+    }
+
     @Override
     public void onEnable() {
         HeheCommands cmd_hehe = new HeheCommands(this, "hehe");
+        HeheCommands cmd_test = new HeheCommands(this, "test");
 
         Objects.requireNonNull(getCommand(cmd_hehe.getLabel())).setExecutor(cmd_hehe);
         Objects.requireNonNull(getCommand(cmd_hehe.getLabel())).setTabCompleter(cmd_hehe);
+        Objects.requireNonNull(getCommand(cmd_test.getLabel())).setExecutor(cmd_test);
+        Objects.requireNonNull(getCommand(cmd_test.getLabel())).setTabCompleter(cmd_test);
+
 
         pManager.registerEvents(this, this);
 
@@ -91,6 +113,8 @@ public class test extends JavaPlugin implements Listener {
         Player player = event.getPlayer();
 
         player.getInventory().addItem(HeheItems.getBandageItemStack());
+
+        scboard(player);
 
         event.setJoinMessage(ChatColor.YELLOW + player.getName() + ChatColor.WHITE + "님이 서버에 접속하셨습니다. 어서오세요~");
     }
