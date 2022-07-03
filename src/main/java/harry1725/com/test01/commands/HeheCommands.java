@@ -131,6 +131,17 @@ public class HeheCommands extends AbstractCommand {
                                 player.sendMessage(ChatColor.GREEN + "/hehe potion <포션 효과>" + ChatColor.WHITE + "포션 효과를 부여합니다.");
                                 player.sendMessage(ChatColor.AQUA + "포션 효과" + ChatColor.WHITE + " :");
                                 player.sendMessage(ChatColor.BLUE + "nv (야간 투시)" + ChatColor.RED + ", " + ChatColor.YELLOW + "st (포화)" + ChatColor.RED + "");
+                            } else if (args[1].equalsIgnoreCase("nickname")) {
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.GRAY + "=====================================================");
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.GREEN + "초록색 명령어" + ChatColor.YELLOW + "는 권한이 필요없고, ");
+                                player.sendMessage(ChatColor.GOLD + "주황색 명령어" + ChatColor.YELLOW + "는 권한이 필요합니다.");
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.AQUA + "/hehe nickname" + ChatColor.WHITE + " 사용 방법 :");
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.GREEN + "/hehe nickname <String>" + ChatColor.WHITE + "플레이어의 닉네임을 <String>으로 설정합니다.");
+                                player.sendMessage(ChatColor.GREEN + "/hehe nickname reset" + ChatColor.WHITE + "플레이어의 닉네임을 초기화합니다.");
                             } else {
                                 player.sendMessage(ChatColor.RED + "/hehe help에 등록되지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help time" + ChatColor.WHITE + "를 통해 명령어 사용 방법을 확인하세요.");
                             }
@@ -156,6 +167,7 @@ public class HeheCommands extends AbstractCommand {
                             player.sendMessage(ChatColor.GREEN + "/hehe cancel" + ChatColor.WHITE + " : 플러그인을 통해 실행되는 모든 것을 취소합니다.");
                             player.sendMessage(ChatColor.GOLD + "/hehe time <6/12/18/24>" + ChatColor.WHITE + " 월드의 시간을 오전 6시/오후 12시/오후 6시/오전 12시로 변경합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe potion <포션 효과>" + ChatColor.WHITE + "포션 효과를 부여합니다.");
+                            player.sendMessage(ChatColor.GREEN + "/hehe nickname <reset/String>" + ChatColor.WHITE + "플레이어 닉네임을 설정하거나 초기화합니다.");
                             player.sendMessage("");
                             player.sendMessage(ChatColor.GRAY + "=====================================================");
                             player.sendMessage("");
@@ -244,7 +256,7 @@ public class HeheCommands extends AbstractCommand {
                         thehe.openInv(player);
                         player.sendMessage(ChatColor.GREEN + "게임모드를 변경할 수 있는 인벤토리 창을 띄웠습니다. ESC 키를 이용해 닫을 수 있습니다.");
                     } else if (args[0].equalsIgnoreCase("timer")) {
-                        if (args.length == 1) {
+                        if (args.length <= 1) {
                             time[0] = 10;
 
                             player.sendMessage("");
@@ -311,7 +323,7 @@ public class HeheCommands extends AbstractCommand {
                             }
                         }
                     } else if (args[0].equalsIgnoreCase("potion")) {
-                        if (args.length == 1) {
+                        if (args.length <= 1) {
                             player.sendMessage(ChatColor.RED + "명령어의 인자가 너무 적거나 없습니다! " + ChatColor.YELLOW + "/hehe help potion" + ChatColor.RED + " 명령어를 통해 도움말을 확인할 수 있습니다.");
                         } else {
                             if (args[1].equalsIgnoreCase("nv")) {
@@ -323,6 +335,27 @@ public class HeheCommands extends AbstractCommand {
                             } else {
                                 player.sendMessage(ChatColor.RED + "알 수 없는 포션 효과입니다. 아래의 목록에 있는 포션 효과를 입력해 주세요.");
                                 player.sendMessage(ChatColor.BLUE + "nv (야간 투시)" + ChatColor.RED + ", " + ChatColor.YELLOW + "st (포화)" + ChatColor.RED + "");
+                            }
+                        }
+                    } else if (args[0].equalsIgnoreCase("nickname")) {
+                        if (args.length <= 1) {
+                            player.sendMessage(ChatColor.RED + "명령어의 인자가 너무 적거나 없습니다! " + ChatColor.YELLOW + "/hehe help nickname" + ChatColor.RED + " 명령어를 통해 도움말을 확인할 수 있습니다.");
+                        } else {
+                            String realName = player.getName();
+
+                            if (args[1].equals("reset")) {
+                                player.setDisplayName(realName);
+                                player.setPlayerListName(realName);
+
+                                player.sendMessage(ChatColor.GREEN + "플레이어의 닉네임을 초기화하였습니다.");
+                            } else if (args[1].equals(realName) || args[1].equals(player.getDisplayName())) {
+                                player.sendMessage(ChatColor.RED + "변경하려는 이름이 현재 설정된 이름과 동일합니다. 다시 입력해 주세요.");
+                                player.sendMessage(ChatColor.RED + "닉네임을 초기화하려면 " + ChatColor.YELLOW + "/hehe nickname reset" + ChatColor.RED + "을 입력해 주세요.");
+                            } else {
+                                player.sendMessage(ChatColor.AQUA + "플레이어의 닉네임이 " + ChatColor.WHITE + player.getDisplayName() + ChatColor.AQUA + " 에서 " + ChatColor.WHITE + args[1] + ChatColor.AQUA + " 으로 변경합니다.");
+
+                                player.setDisplayName(args[1]);
+                                player.setPlayerListName(args[1]);
                             }
                         }
                     } else {
