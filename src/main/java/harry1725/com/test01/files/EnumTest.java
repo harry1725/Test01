@@ -1,4 +1,4 @@
-package harry1725.com.test01;
+package harry1725.com.test01.files;
 
 public enum EnumTest {
     APPLE("apple", true),

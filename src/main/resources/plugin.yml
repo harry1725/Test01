@@ -1,5 +1,5 @@
 name: Test01
-version: 1.19-SNAPSHOT
+version: 2.0
 api-version: 1.19
 main: harry1725.com.test01.test
 author: Derman_e
@@ -7,7 +7,10 @@ description: Derman_e 수제 공부용 플러그인.
 
 commands:
   hehe:
-    description: 플러그인 메인 커맨드입니다.
+    description: 플러그인 메인 커맨드 1 입니다.
+
+  hh:
+    description: 플러그인 메인 커맨드 2 입니다.
 
   test:
     description: 콘솔용 플러그인 커맨드입니다.

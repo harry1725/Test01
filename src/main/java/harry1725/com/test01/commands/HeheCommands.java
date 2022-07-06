@@ -1,16 +1,16 @@
 package harry1725.com.test01.commands;
 
-import harry1725.com.test01.EnumTest;
-import harry1725.com.test01.Permissions;
+import harry1725.com.test01.files.EnumTest;
+import harry1725.com.test01.files.Permissions;
 import harry1725.com.test01.test;
 import harry1725.com.test01.items.HeheItems;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -20,10 +20,21 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 public class HeheCommands extends AbstractCommand {
-    public final Logger logger = Logger.getLogger("Test");
+    public final Logger logger = Logger.getLogger("Minecraft");
 
     public HeheCommands(test plugin, String commandLabel) {
         super(plugin, commandLabel);
+    }
+
+    public void openInv(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 27, "게임모드 변경");
+
+        inv.setItem(10, HeheItems.getSurvivalIconItemStack());
+        inv.setItem(12, HeheItems.getCreativeIconItemStack());
+        inv.setItem(14, HeheItems.getAdventureIconItemStack());
+        inv.setItem(16, HeheItems.getSpectatorIconItemStack());
+
+        player.openInventory(inv);
     }
 
     @Override
@@ -42,6 +53,7 @@ public class HeheCommands extends AbstractCommand {
             tabs.add("timer");
             tabs.add("cancel");
             tabs.add("time");
+            tabs.add("entity");
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("tp")) {
                 tabs.add("save");
@@ -56,6 +68,11 @@ public class HeheCommands extends AbstractCommand {
             } else if (args[0].equalsIgnoreCase("potion")) {
                 tabs.add("nv");
                 tabs.add("st");
+            } else if (args[0].equalsIgnoreCase("entity")) {
+                tabs.add("wolf");
+                tabs.add("ocelot");
+                tabs.add("villager");
+                tabs.add("armor_stand");
             }
         }
 
@@ -66,10 +83,12 @@ public class HeheCommands extends AbstractCommand {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
+            String playerName = player.getName();
             Location location = player.getLocation();
-            String world = player.getWorld().getName();
+            World world = player.getWorld();
+            String worldName = player.getWorld().getName();
 
-            if (label.equalsIgnoreCase("hehe")) {
+            if (label.equalsIgnoreCase("hehe") || label.equalsIgnoreCase("hh")) {
                 if (args.length <= 0) {
                     player.sendMessage(ChatColor.RED + "명령어의 인자가 너무 적거나 없습니다! " + ChatColor.YELLOW + "/hehe help" + ChatColor.RED + " 명령어를 통해 도움말을 확인할 수 있습니다.");
                 } else {
@@ -143,6 +162,17 @@ public class HeheCommands extends AbstractCommand {
                                 player.sendMessage("");
                                 player.sendMessage(ChatColor.GREEN + "/hehe nickname <String>" + ChatColor.WHITE + "플레이어의 닉네임을 <String>으로 설정합니다.");
                                 player.sendMessage(ChatColor.GREEN + "/hehe nickname reset" + ChatColor.WHITE + "플레이어의 닉네임을 초기화합니다.");
+                            } else if (args[1].equalsIgnoreCase("entity")) {
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.GRAY + "=====================================================");
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.GREEN + "초록색 명령어" + ChatColor.YELLOW + "는 권한이 필요없고, ");
+                                player.sendMessage(ChatColor.GOLD + "주황색 명령어" + ChatColor.YELLOW + "는 권한이 필요합니다.");
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.AQUA + "/hehe entity" + ChatColor.WHITE + " 사용 방법 :");
+                                player.sendMessage("");
+                                player.sendMessage(ChatColor.GREEN + "/hehe entity <String>" + ChatColor.WHITE + "플레이어의 위치에 입력된 엔티티를 소환합니다.");
+                                player.sendMessage("");
                             } else {
                                 player.sendMessage(ChatColor.RED + "/hehe help에 등록되지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help time" + ChatColor.WHITE + "를 통해 명령어 사용 방법을 확인하세요.");
                             }
@@ -170,6 +200,8 @@ public class HeheCommands extends AbstractCommand {
                             player.sendMessage(ChatColor.GREEN + "/hehe potion <포션 효과>" + ChatColor.WHITE + "포션 효과를 부여합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe nickname <reset/String>" + ChatColor.WHITE + "플레이어 닉네임을 설정하거나 초기화합니다.");
                             player.sendMessage(ChatColor.GREEN + "/hehe enum <String>" + ChatColor.WHITE + "열거형 테스트입니다.");
+                            player.sendMessage(ChatColor.GREEN + "/hehe entity <String>" + ChatColor.WHITE + "플레이어의 위치에 입력된 엔티티를 소환합니다.");
+                            player.sendMessage(ChatColor.GREEN + "/hehe detect" + ChatColor.WHITE + "플레이어를 기준으로 모든 방향에 대해 20블록 내에 있는 모든 엔티티를 감지하여 출력합니다.");
                             player.sendMessage("");
                             player.sendMessage(ChatColor.GRAY + "=====================================================");
                             player.sendMessage("");
@@ -200,7 +232,7 @@ public class HeheCommands extends AbstractCommand {
                     } else if (args[0].equalsIgnoreCase("config")) {
                         if (args.length <= 1) {
                             player.sendMessage(ChatColor.RED + "입력하신 인자값이 너무 적거나 없습니다. 아래의 목록에서 config에 등록된 이름을 찾을 수 있습니다.");
-                            player.sendMessage(ChatColor.RED + "config.yml에 있는 내용: " + ChatColor.YELLOW + "first, second, " + player.getName());
+                            player.sendMessage(ChatColor.RED + "config.yml에 있는 내용: " + ChatColor.YELLOW + "first, second, " + playerName);
                         } else {
                             if (args[1].equalsIgnoreCase("first")) {
                                 player.sendMessage(ChatColor.AQUA + "config.yml의 first 메세지입니다.");
@@ -208,9 +240,9 @@ public class HeheCommands extends AbstractCommand {
                             } else if (args[1].equalsIgnoreCase("second")) {
                                 player.sendMessage(ChatColor.AQUA + "config.yml의 second 메세지입니다.");
                                 player.sendMessage(ChatColor.WHITE + "second : " + ChatColor.GRAY + thehe.getConfig().getString("second"));
-                            } else if (args[1].equals(player.getName())) {
-                                player.sendMessage(ChatColor.AQUA + "config.yml의 " + player.getName() + " 메세지입니다.");
-                                player.sendMessage(ChatColor.WHITE + "second : " + ChatColor.GRAY + thehe.getConfig().getString(player.getName()));
+                            } else if (args[1].equals(playerName)) {
+                                player.sendMessage(ChatColor.AQUA + "config.yml의 " + playerName + " 메세지입니다.");
+                                player.sendMessage(ChatColor.WHITE + "second : " + ChatColor.GRAY + thehe.getConfig().getString(playerName));
                             } else {
                                 player.sendMessage(ChatColor.RED + "/hehe config에 등록되어 있지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help config" + ChatColor.RED + "를 통해 명령어 사용 방법을 확인하세요.");
                             }
@@ -223,25 +255,25 @@ public class HeheCommands extends AbstractCommand {
                                 player.sendMessage(ChatColor.RED + "입력하신 인자값이 너무 적거나 없습니다. " + ChatColor.YELLOW + "/hehe help tp" + ChatColor.YELLOW + "를 통해 명령어 사용 방법을 확인하세요.");
                             } else {
                                 if (args[1].equalsIgnoreCase("save")) {
-                                    thehe.getConfig().set(player.getName() + ".position.x", location.getBlockX());
-                                    thehe.getConfig().set(player.getName() + ".position.y", location.getBlockY());
-                                    thehe.getConfig().set(player.getName() + ".position.y", location.getBlockZ());
-                                    thehe.getConfig().set(player.getName() + ".position.pitch", location.getPitch());
-                                    thehe.getConfig().set(player.getName() + ".position.yaw", location.getYaw());
+                                    thehe.getConfig().set(playerName + ".position.x", location.getBlockX());
+                                    thehe.getConfig().set(playerName + ".position.y", location.getBlockY());
+                                    thehe.getConfig().set(playerName + ".position.y", location.getBlockZ());
+                                    thehe.getConfig().set(playerName + ".position.pitch", location.getPitch());
+                                    thehe.getConfig().set(playerName + ".position.yaw", location.getYaw());
                                     thehe.saveConfig();
 
-                                    player.sendMessage(ChatColor.YELLOW + player.getName() + ChatColor.GREEN + "의 현재 좌표가 저장되었습니다.");
+                                    player.sendMessage(ChatColor.YELLOW + playerName + ChatColor.GREEN + "의 현재 좌표가 저장되었습니다.");
                                 } else if (args[1].equalsIgnoreCase("load")) {
-                                    if (!thehe.getConfig().isSet(player.getName() + ".position.x")) {
+                                    if (!thehe.getConfig().isSet(playerName + ".position.x")) {
                                         player.sendMessage(ChatColor.RED + "저장된 좌표가 없습니다! " + ChatColor.YELLOW + "/hehe tp save" + ChatColor.RED + " 명령어를 통해 좌표를 먼저 지정해 주세요.");
                                     } else {
-                                        double x = thehe.getConfig().getDouble(player.getName() + ".position.x");
-                                        double y = thehe.getConfig().getDouble(player.getName() + ".position.y");
-                                        double z = thehe.getConfig().getDouble(player.getName() + ".position.z");
+                                        double x = thehe.getConfig().getDouble(playerName + ".position.x");
+                                        double y = thehe.getConfig().getDouble(playerName + ".position.y");
+                                        double z = thehe.getConfig().getDouble(playerName + ".position.z");
 
-                                        player.teleport(new Location(player.getWorld(), x, y, z));
-                                        player.getLocation().setPitch((float) thehe.getConfig().getDouble(player.getName() + ".position.pitch"));
-                                        player.getLocation().setYaw((float) thehe.getConfig().getDouble(player.getName() + ".position.yaw"));
+                                        player.teleport(new Location(world, x, y, z));
+                                        player.getLocation().setPitch((float) thehe.getConfig().getDouble(playerName + ".position.pitch"));
+                                        player.getLocation().setYaw((float) thehe.getConfig().getDouble(playerName + ".position.yaw"));
                                     }
                                 } else {
                                     player.sendMessage(ChatColor.RED + "/hehe tp에 등록되어 있지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help tp" + ChatColor.RED + "를 통해 명령어 사용 방법을 확인하세요.");
@@ -255,7 +287,7 @@ public class HeheCommands extends AbstractCommand {
                             player.sendMessage(ChatColor.WHITE + "현재 " + ChatColor.RED + "Test.bypass" + ChatColor.WHITE + " 권한을 가지고 있지 않습니다.");
                         }
                     } else if (args[0].equalsIgnoreCase("inv")) {
-                        thehe.openInv(player);
+                        openInv(player);
                         player.sendMessage(ChatColor.GREEN + "게임모드를 변경할 수 있는 인벤토리 창을 띄웠습니다. ESC 키를 이용해 닫을 수 있습니다.");
                     } else if (args[0].equalsIgnoreCase("timer")) {
                         if (args.length <= 1) {
@@ -311,16 +343,16 @@ public class HeheCommands extends AbstractCommand {
                             if (args.length <= 1) {
                                 player.sendMessage(ChatColor.RED + "입력하신 인자값이 너무 적거나 없습니다. " + ChatColor.YELLOW + "/hehe help time" + ChatColor.YELLOW + "를 통해 명령어 사용 방법을 확인하세요.");
                             } else if (args[1].equalsIgnoreCase("6")) {
-                                Objects.requireNonNull(Bukkit.getWorld(world)).setTime(0);
+                                Objects.requireNonNull(Bukkit.getWorld(worldName)).setTime(0);
                                 player.sendMessage(ChatColor.GREEN + "세계의 시간을 " + ChatColor.YELLOW + "AM 6:00" + ChatColor.WHITE + "로 변경하였습니다.");
                             } else if (args[1].equalsIgnoreCase("12")) {
-                                Objects.requireNonNull(Bukkit.getWorld(world)).setTime(6000);
+                                Objects.requireNonNull(Bukkit.getWorld(worldName)).setTime(6000);
                                 player.sendMessage(ChatColor.GREEN + "세계의 시간을 " + ChatColor.YELLOW + "PM 12:00" + ChatColor.WHITE + "로 변경하였습니다.");
                             } else if (args[1].equalsIgnoreCase("18")) {
-                                Objects.requireNonNull(Bukkit.getWorld(world)).setTime(12000);
+                                Objects.requireNonNull(Bukkit.getWorld(worldName)).setTime(12000);
                                 player.sendMessage(ChatColor.GREEN + "세계의 시간을 " + ChatColor.YELLOW + "PM 6:00" + ChatColor.WHITE + "로 변경하였습니다.");
                             } else if (args[1].equalsIgnoreCase("24")) {
-                                Objects.requireNonNull(Bukkit.getWorld(world)).setTime(18000);
+                                Objects.requireNonNull(Bukkit.getWorld(worldName)).setTime(18000);
                                 player.sendMessage(ChatColor.GREEN + "세계의 시간을 " + ChatColor.YELLOW + "AM 12:00" + ChatColor.WHITE + "로 변경하였습니다.");
                             }
                         }
@@ -343,14 +375,12 @@ public class HeheCommands extends AbstractCommand {
                         if (args.length <= 1) {
                             player.sendMessage(ChatColor.RED + "명령어의 인자가 너무 적거나 없습니다! " + ChatColor.YELLOW + "/hehe help nickname" + ChatColor.RED + " 명령어를 통해 도움말을 확인할 수 있습니다.");
                         } else {
-                            String realName = player.getName();
-
                             if (args[1].equals("reset")) {
-                                player.setDisplayName(realName);
-                                player.setPlayerListName(realName);
+                                player.setDisplayName(playerName);
+                                player.setPlayerListName(playerName);
 
                                 player.sendMessage(ChatColor.GREEN + "플레이어의 닉네임을 초기화하였습니다.");
-                            } else if (args[1].equals(realName) || args[1].equals(player.getDisplayName())) {
+                            } else if (args[1].equals(playerName) || args[1].equals(player.getDisplayName())) {
                                 player.sendMessage(ChatColor.RED + "변경하려는 이름이 현재 설정된 이름과 동일합니다. 다시 입력해 주세요.");
                                 player.sendMessage(ChatColor.RED + "닉네임을 초기화하려면 " + ChatColor.YELLOW + "/hehe nickname reset" + ChatColor.RED + "을 입력해 주세요.");
                             } else {
@@ -400,6 +430,31 @@ public class HeheCommands extends AbstractCommand {
                                     break;
                                 }
                             }
+                        }
+                    } else if (args[0].equalsIgnoreCase("entity")) {
+                        if (args.length <= 1) {
+                            player.sendMessage(ChatColor.RED + "명령어의 인자가 너무 적거나 없습니다! 소환 가능한 엔티티는 아래의 표를 참고해 주세요!");
+                            player.sendMessage(ChatColor.YELLOW + "늑대 (Wolf), 오셀롯 (Ocelot), 주민 (Villager), 갑옷 거치대 (armor_stand)");
+                        } else if (args[1].equalsIgnoreCase("wolf")) {
+                            world.spawnEntity(location, EntityType.WOLF);
+                            player.sendMessage(ChatColor.GREEN + "플레이어가 서 있는 위치에 엔티티 ", ChatColor.YELLOW + "\"늑대\"" + ChatColor.GREEN + "를 소환하였습니다.");
+                        } else if (args[1].equalsIgnoreCase("ocelot")) {
+                            world.spawnEntity(location, EntityType.OCELOT);
+                            player.sendMessage(ChatColor.GREEN + "플레이어가 서 있는 위치에 엔티티 ", ChatColor.YELLOW + "\"오셀롯\"" + ChatColor.GREEN + "을 소환하였습니다.");
+                        } else if (args[1].equalsIgnoreCase("villager")) {
+                            world.spawnEntity(location, EntityType.VILLAGER);
+                            player.sendMessage(ChatColor.GREEN + "플레이어가 서 있는 위치에 엔티티 ", ChatColor.YELLOW + "\"주민\"" + ChatColor.GREEN + "을 소환하였습니다.");
+                        } else if (args[1].equalsIgnoreCase("armor_stand")) {
+                            world.spawnEntity(location, EntityType.ARMOR_STAND);
+                            player.sendMessage(ChatColor.GREEN + "플레이어가 서 있는 위치에 엔티티 ", ChatColor.YELLOW + "\"갑옷 거치대\"" + ChatColor.GREEN + "를 소환하였습니다.");
+                        } else {
+                            player.sendMessage(ChatColor.RED + "알 수 없는 엔티티입니다. 아래의 목록에 있는 엔티티를 입력해 주세요.");
+                            player.sendMessage(ChatColor.YELLOW + "늑대 (Wolf), 오셀롯 (Ocelot), 주민 (Villager), 갑옷 거치대 (armor_stand)");
+                        }
+                    } else if (args[0].equalsIgnoreCase("detect")) {
+                        player.sendMessage(ChatColor.AQUA + "현재 플레이어 기준 모든 방향에 대해 20블록 내에 있는 엔티티 목록입니다.");
+                        for (Entity entity : player.getNearbyEntities(20.0, 20.0, 20.0)) {
+                            player.sendMessage((entity instanceof Player ? entity.getName() : entity.getType().name()));
                         }
                     } else {
                         player.sendMessage(ChatColor.RED + "hehe에 등록되어 있지 않은 명령어입니다. " + ChatColor.YELLOW + "/hehe help" + ChatColor.RED + "를 통해 명령어 목록을 확인하세요.");

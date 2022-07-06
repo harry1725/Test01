@@ -6,7 +6,7 @@
 
   <groupId>harry1725.com</groupId>
   <artifactId>Test01</artifactId>
-  <version>1.19-SNAPSHOT</version>
+  <version>2.0</version>
   <packaging>jar</packaging>
 
   <name>Plugin_Test</name>
